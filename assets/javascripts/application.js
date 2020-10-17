@@ -1,42 +1,96 @@
-!((window) => {
+!(() => {
 
-/**
- * Materialize
- */
-const sidenavElems = document.querySelectorAll('.sidenav');
-const sidenavInstances = M.Sidenav.init(sidenavElems, {});
+  class CodeComponent extends HTMLElement {
 
-// const parallaxElems = document.querySelectorAll('.parallax');
-// const parallaxInstances = M.Parallax.init(parallaxElems, {});
+    connectedCallback() {
+      this.innerHTML = `
+        <p class="d-flex">
+          <ion-skeleton-text class="sk sk-small sk-keycode"></ion-skeleton-text>
+          <ion-skeleton-text class="sk sk-medium ion-margin-start"></ion-skeleton-text>
+        </p>
 
-const carouselElems = document.querySelectorAll('.carousel');
-const carouselSettings = {
-  numVisible: 5,
-  fullWidth: true,
-  noWrap: false,
-  indicators: true
-}
-const carouselInstances = M.Carousel.init(carouselElems, carouselSettings);
+        <p class="d-flex ident">
+          <ion-skeleton-text class="sk sk-small sk-var"></ion-skeleton-text>
+          <ion-skeleton-text class="sk sk-medium ion-margin-start"></ion-skeleton-text>
+        </p>
 
-/**
- * Lotties Animations
- */
-const programmerAnimation = document.querySelector('.programmer-animation');
-lottie.loadAnimation({
-  container: programmerAnimation, // the dom element that will contain the animation
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'assets/lotties/17343-programming.json' // the path to the animation json
-});
+        <p class="d-flex>
+          <ion-skeleton-text class="sk sk-medium"></ion-skeleton-text>
+          <ion-skeleton-text class="sk sk-medium ion-margin-start"></ion-skeleton-text>
+        </p>
 
-const underConstructionAnimation = document.querySelector('.construction-animation');
-lottie.loadAnimation({
-  container: underConstructionAnimation, // the dom element that will contain the animation
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'assets/lotties/27330-construction-in-process-by-kit8net.json' // the path to the animation json
-});
+        <p class="d-flex ident">
+          <ion-skeleton-text class="sk sk-large"></ion-skeleton-text>
+          <ion-skeleton-text class="sk sk-medium ion-margin-start"></ion-skeleton-text>
+          <ion-skeleton-text class="sk sk-large ion-margin-start"></ion-skeleton-text>
+        </p>
+      `;
+    }
 
-})(window)
+  }
+
+  customElements.define('app-code', CodeComponent);
+
+
+  /**
+   * 
+   */
+  const bash = document.querySelector('.bash');
+  const lines = [
+    '',
+    '--dev',
+    '--ruby',
+    '--rails',
+    '--python',
+    '--php',
+    '--app',
+    '--pwa',
+    ';)'
+  ];
+
+  async function terminal() {
+    await sleep(2500);
+
+    for (let line of lines) {   
+      bash.textContent = 'igor ';
+      for (let char of [...line]) {
+        bash.textContent += char;
+        await sleep(350);
+      }
+
+      await sleep(500);
+
+      for (let _ of [...line]) {
+        const content = bash.textContent.split('')
+        content.pop();
+        bash.textContent = content.join('');
+        await sleep(150);
+      }
+    }
+
+    terminal();
+  }
+
+  async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  } 
+
+  terminal();
+
+  /**
+   * 
+   */
+  const toggleTheme = document.querySelector('.toggle-theme');
+  
+  toggleTheme.addEventListener('click', (evt) => {
+    const icon = toggleTheme.querySelector('ion-icon');
+
+    if (document.body.classList.contains('dark')) {
+      document.body.classList.remove('dark');
+      icon.setAttribute('name', 'moon-outline');
+    } else {
+      document.body.classList.add('dark');
+      icon.setAttribute('name', 'sunny-outline');
+    }
+  });
+})()
